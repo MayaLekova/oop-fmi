@@ -16,13 +16,12 @@ using std::cin, std::cout;
 // double input_coords_y[] = {3, 6.5, 4.5, 2, 4, 5.8, 4.5}; 
 
 double* allocateArray(size_t length) {
-  size_t size = length * sizeof(double);
-  double* result = new double[size];
-  // евентуална проверка дали заделянето е успешно
+  double* result = new double[length];
+  // можем да добавим евентуална проверка дали заделянето е успешно
   return result;
 }
 
-bool inputArray(size_t length, double** out_array) {
+bool inputArray(size_t length, double* out_array) {
   if (!out_array) {
     return false;
   }
@@ -30,9 +29,9 @@ bool inputArray(size_t length, double** out_array) {
   double d;
   for (int i = 0; i < length; ++i) {
     cin >> d;
-    (*out_array)[i] = d;
-    // еквивалентно на доста по-подробното и не особено красиво
-    // *((*out_array) + i) = d;
+    out_array[i] = d;
+    // или изразено с указателна аритметика:
+    // *(out_array + i) = d;
   }
   return true;
 }
@@ -60,8 +59,8 @@ int main() {
   outputArray(length, input_coords_y);
   cout << "\n";
 
-  inputArray(length, &input_coords_x);
-  inputArray(length, &input_coords_y);
+  inputArray(length, input_coords_x);
+  inputArray(length, input_coords_y);
 
   cout << "\n=== After data read ===\n";
   cout << "X coords are: " << std::endl;
