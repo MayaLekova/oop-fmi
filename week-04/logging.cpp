@@ -78,6 +78,7 @@ class String {
   String(const String& other) {
     init(other.message, other.length);
   }
+  // TODO: implement `operator=`
   ~String() {
     deinit();
   }
