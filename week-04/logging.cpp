@@ -23,7 +23,11 @@ struct DateTime {
     , hour(_hour)
     , minute(_minute)
     , second(_second)
-  {}
+  {
+    // year = _year;
+    // month = _month;
+    // ..
+  }
 
   void increment() {
     if (second < 60) {
@@ -56,7 +60,7 @@ struct DateTime {
     std::cout << "[timestamp]";
   }
 
-  field year;
+  field year;   // unsigned short year;
   field month;
   field day;
 
@@ -72,8 +76,6 @@ class String {
     init(msg, len);
   }
   String(const String& other) {
-    if (this == &other) return;
-    deinit();
     init(other.message, other.length);
   }
   ~String() {
@@ -81,6 +83,7 @@ class String {
   }
 
   void print() const {
+    // `this` points to a const object
     if (!message) {
       std::cout << "NULL string";
       return;
@@ -101,7 +104,7 @@ class String {
 
 void String::init(const char* msg, size_t len) {
   message = new char[len];
-  strncpy(message, msg, len);
+  strncpy(message, msg, len);  // strcpy
   length = len;
 }
 
@@ -140,7 +143,10 @@ class LogEntry {
     : timestamp(_timestamp)
     , severity(_severity)
     , message(msg, len)
-  {}
+  {
+    // some more complex code in the constructor body;
+    // the "simple" initialisation goes in the initialiser list
+  }
 
   void print() const {
     timestamp.print();
@@ -168,7 +174,7 @@ void generate_all_the_logs(size_t logs_count) {
 }
 
 int main() {
-  generate_all_the_logs(100);
+  generate_all_the_logs(10000000);
   log_queue[42].print();
 
   return 0;
