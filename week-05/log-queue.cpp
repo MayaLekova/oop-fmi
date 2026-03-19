@@ -5,12 +5,6 @@
 #include <functional>
 #include <iostream>
 
-float random_float(float max = 1.0f) {
-  float r = static_cast<float>(rand()) /
-            static_cast<float>(RAND_MAX);
-  return r * max;
-}
-
 template <typename T>
 class DynamicArray {
  public:
@@ -48,9 +42,6 @@ class DynamicArray {
   T* elements;
   size_t capacity, filled_size;
 };
-
-// template <typename T>
-// T DynamicArray<T>::INVALID_ELEMENT = T();
 
 template <typename T>
 DynamicArray<T>::DynamicArray(size_t initial_size) {
@@ -153,6 +144,9 @@ void DynamicArray<T>::deinit() {
   elements = nullptr;
 }
 
+// ---------------------------------------------
+// Standalone container functions - map, filter, reduce
+
 template <typename T>
 using Operation = std::function<T(T)>;
 
@@ -179,6 +173,15 @@ DynamicArray<T> filter(const DynamicArray<T>& array, Predicate<T> pred) {
   }
 
   return filtered;
+}
+
+// ---------------------------------------------
+// Testing helpers
+
+float random_float(float max = 1.0f) {
+  float r = static_cast<float>(rand()) /
+            static_cast<float>(RAND_MAX);
+  return r * max;
 }
 
 void read_sensors(size_t size, DynamicArray<float>& out_temps) {
