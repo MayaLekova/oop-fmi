@@ -70,7 +70,7 @@ void swap(T& a, T& b) {
 }
 
 template <class T>
-void sort(T* arr, unsigned size) {
+void sort(T* arr, unsigned size) { // selection sort
     for (unsigned i = 0; i < size; i++) {
         unsigned minIndex = i;
         for (unsigned j = i + 1; j < size; j++) {
@@ -86,7 +86,7 @@ void sort(T* arr, unsigned size) {
 }
 
 template<>
-void sort<unsigned char>(unsigned char* arr, unsigned size) {
+void sort<unsigned char>(unsigned char* arr, unsigned size) { // counting sort
     constexpr unsigned UCHAR_LIMIT = 256;
 
     unsigned occurrences[UCHAR_LIMIT]{ 0 };
