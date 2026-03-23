@@ -168,30 +168,8 @@ std::function<bool(const Person&)> isEligible = [minAge, maxAge, &blockedName](c
 | `[=, &x]` | всичко по стойност, но `x` по референция |
 | `[this]`  | capture-ва текущия обект (в методи) |
 
-**Относно `[&]` — ако ламбдата надживее scope-а на прихванатата променлива, оставаме с висяща референция към нещо, което вече е изтрито, така че ще имаме undefined behavior!**
-
-```c++
-auto makeLambda() {
-    int x = 42;
-    return [&x]() { return x; }; // x е унищожен след return
-}
-```
-
-### Ламбди и указатели към функции
-
-Ламбда **без capture** може имплицитно да се конвертира до указател към функция:
-
-```c++
-int (*fp)(int) = [](int x) { return x * 2; };
-```
-
-```c++
-int factor = 3;
-int (*fp)(int) = [factor](int x) { return x * factor; }; // не се компилира - с capture клауза не може
-```
-
 ## std::function
-*std::function* (от *<functional>*) е wrapper, който може да съдържа **всичко, което може да се извика с оператор() (callable)** — функция, ламбда (дори с capture), функтор.
+*std::function* (от *\<functional\>*) е wrapper, който може да съдържа **всичко, което може да се извика с оператор() (callable)** — функция, ламбда (дори с capture), функтор.
 
 ```c++
 #include <functional>
@@ -219,4 +197,36 @@ int main() {
     int bonus = 10;
     map(arr, 4, [bonus](int x) { return x + bonus; }); // {11, 12, 13, 14}
 }
+```
+
+**Относно `[&]` — ако ламбдата надживее scope-а на прихванатата променлива, оставаме с висяща референция към нещо, което вече е изтрито, така че ще имаме undefined behavior!**
+
+```c++
+#include <iostream>
+#include <functional>
+
+std::function<int()> makeLambda() {
+    int x = 42;
+    return [&x]() { return x; };
+}
+
+int main() {
+    std::function<int()> identity = makeLambda();
+    std::cout << identity(); // функцията използва променливата x, но към момента на извикването на identity тук,
+                             // тази променлива вече е освободена (понеже е локална за функцията makeIdentity)
+                            // и затова резултатът от това извикване не е ясен
+}
+```
+
+### Ламбди и указатели към функции
+
+Ламбда **без capture** може имплицитно да се конвертира до указател към функция:
+
+```c++
+int (*fp)(int) = [](int x) { return x * 2; };
+```
+
+```c++
+int factor = 3;
+int (*fp)(int) = [factor](int x) { return x * factor; }; // не се компилира - с capture клауза не може
 ```
