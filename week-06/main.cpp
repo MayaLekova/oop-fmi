@@ -225,16 +225,5 @@ int main() {
   std::cout << "\n--- other temps; size(" << other_temps.size() << "): ---" << std::endl;
   std::cout << other_temps;
 
-  // map<float>(temperatures, increase_by_20);
-  // std::cout << "---------------" << std::endl;
-  // print_sensors(temperatures);
-
-  // map<float>(temperatures, [](float x) -> float{ return x - 10; });
-  // std::cout << "---------------" << std::endl;
-  // print_sensors(temperatures);
-
-  // std::function<float(float)> decreaser = [](float x) -> float{ return x - 10; };
-  // map(temperatures, decreaser);
-
   return 0;
 }
