@@ -97,7 +97,10 @@ void Texture::WriteFile(const std::string& filepath, bool binaryMode) {
 
   // записваме пикселите
   for (size_t i = 0; i < height; ++i) {
-    // запис в двоичен режим
+    // запис в двоичен режим - използваме `reinterpret_cast`, за да
+    // интерпретираме данните в класа като "суров" указател към място.
+    // в паметта. `write` методът очаква указател към начало на паметта
+    // и брой байтове, които да прочете от нея.з
     if (binaryMode) {
       out_file.write(reinterpret_cast<const char*>(pixel_data[i]), width * sizeof(Pixel));
       continue;
@@ -120,7 +123,7 @@ class Effect : public Asset {
 
 int main() {
   Texture t;
-  t.LoadFile("red.txt", false);
+  t.LoadFile("text_files/red.txt", false);
   t.WriteFile("other_red_text.txt", false);
   t.WriteFile("other_red_binary.bin", true);
 }
